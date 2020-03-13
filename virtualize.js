@@ -633,15 +633,13 @@ function init(){
 	if(running == true){
 		return false;
 	}
-	
-	running = true;
-	// $("#Virtualize_button").css({ 'background-color' : 'red'});
-	
+
 	clearpath();
+	running = true;
 	switch(algorithm){
 		case 'Dijkstra':
 		$("#Virtualize_button").css({ 'background-color' : '#c20000'});
-		        clearpath();
+		        //clearpath();
 			var x = document.getElementById("snackbar")
 			x.className = "show";
 			setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
@@ -689,7 +687,7 @@ function init(){
 
 		case 'DFS':
 		$("#Virtualize_button").css({ 'background-color' : '#c20000'});
-			clearpath();
+			//clearpath();
 			var x = document.getElementById("snackbar1")
 			x.className = "show";
 			setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
@@ -738,7 +736,7 @@ function init(){
 
 		case 'BFS':
 		$("#Virtualize_button").css({ 'background-color' : '#c20000'});
-		clearpath();
+		//clearpath();
 			var x = document.getElementById("snackbar2")
 			x.className = "show";
 			setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
