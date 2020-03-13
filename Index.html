@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html>
+<head id = "window"  >
+	<title>Pathfinding Visualizer</title>
+	<link rel = "icon" href =  "map.svg" type = "image/x-icon">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script type="text/javascript" src="virtualize.js"></script>
+	<link rel="stylesheet" type="text/css" href="demo.css">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<link href="https://fonts.googleapis.com/css?family=Permanent+Marker&display=swap" rel="stylesheet"> 
+	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+	
+</head>
+<body>
+
+
+<div style="background-color:  #123e59; background: solid; padding-top: 5  px; padding-bottom: 5px; color:white" >
+
+<h3 onClick="window.location.reload();" ><a class="nav-link"  href="#" style="serif; color: white !important; font-family: 'Permanent Marker', cursive; padding-left: 10px;">Pathfinding Visualizer</a></h3>
+<ul class="nav nav-pills" style="margin-top: 15px;">
+ 
+
+  <li class="nav-item dropdown" id="dropdowm id" style="margin-left: 100px; font-family: 'Roboto Slab', serif; color: white !important;">
+      <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="font-family: 'Roboto Slab', serif; color: white !important;">Algorithm</a>
+      <div class="dropdown-menu">
+        <a class="dropdown-item" href="#" id='Dijkstra' style="font-family: 'Roboto Slab', serif;" onclick="algo('Dijkstra')">Dijkstra Algorithm</a>
+        <a class="dropdown-item" id="DFS" href="#"  style="font-family: 'Roboto Slab', serif;" onclick="algo('DFS')">Depth-First Algorithm</a>
+        <a class="dropdown-item" id="BFS" href="#" style="font-family: 'Roboto Slab', serif;" onclick="algo('BFS')">Breath-First Algorithm</a>
+        <a class="dropdown-item" id="BFS" href="#" style="font-family: 'Roboto Slab', serif;" onclick="algo('Astar')">A Star Search</a>
+        <a class="dropdown-item" id="BFS" href="#" style="font-family: 'Roboto Slab', serif;" onclick="algo('GreedyBestFirst')">Greedy Best First search</a>
+      </div>
+    </li>
+
+  <li class="nav-item dropdown" id="dropdowm id" style="margin-left: 30px; font-family: 'Roboto Slab', serif; color: white !important;">
+      <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="font-family: 'Roboto Slab', serif; color: white !important;">Maze & Pattern</a>
+      <div class="dropdown-menu">
+        <a class="dropdown-item" href="#" id='Dijkstra' style="font-family: 'Roboto Slab', serif;" onclick="maze('basicRandomMaze')">Basic Random Maze</a>
+        <a class="dropdown-item" href="#" id='Dijkstra' style="font-family: 'Roboto Slab', serif;" onclick="maze('basicStair')">Basic Stair Maze</a>
+      </div>
+        
+ 
+    </li>
+
+   <li class="nav-item" style="margin-left: 35px; font-family: 'Roboto Slab', serif; color: white !important;">
+  	  <a class="nav-link" href="#" style="font-family: 'Roboto Slab', serif; color: white !important;" onclick="addflag()">Add Flag</a>
+  </li>
+  <li class="nav-item" style="margin-left: 90px; color: white !important;"><b>
+    <a class="nav-link active" href="#" id="Virtualize_button" style="color: white !important; font-family: 'Roboto Slab', serif; width: 150px; text-align: center;" onclick="init()">Visualize!</a></b>
+  </li>
+  <li class="nav-item" style="margin-left: 85px; ">
+    <a class="nav-link" href="#" style="color: white !important; font-family: 'Roboto Slab', serif;" onclick="clearboard()">Clear Board</a>
+  </li>
+  <li class="nav-item" style="margin-left: 40px; ">
+    <a class="nav-link" href="#" style="color: white !important; font-family: 'Roboto Slab', serif;" onclick="clearpath()">Clear Path</a>
+  </li>
+  <li class="nav-item" style="margin-left: 40px; ">
+    <p class="nav-link" href="#" style="color: white !important; font-family: 'Roboto Slab', serif;">Help</p>
+    
+  </li>
+  <li  class="nav-item">
+  	<input type="image" src="information.svg" style="width: 28px; height: 25px;margin-left: 0px; margin-top: 8px;" name="" data-toggle="modal" data-target="#exampleModalLong">
+  </li>
+</ul>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true" style="color: black">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle"><h5><b>Pathfinding Visualizer!</b></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h6><b>What is Pathfinding Algorithm?</b></h6>
+        <p>Pathfinding algorithms are usually an attempt to solve the shortest path problem in graph theory. They try to find the best path given a starting point and ending point based on some predefined criteria.</p>
+        <h6><b>Picking an Algorithm</b></h6>
+        <p>Before visualization choose an algorithm for finding the shortest path. Not all alogorithms guarantee the shortest path.</p>
+        <h6><b>Adding walls</b></h6>
+        <p>Click on the grid to add a wall. Generate mazes and patterns from the "Mazes & Patterns" drop-down menu.</p>
+        <h6><b>Adding flag</b></h6>
+        <p>Click the "Add Flag" button. Adding a flag will change the course of the chosen algorithm. In other words, the algorithm will first look for the flag and will then look for the target node. Note that the A Star Algorithm and Greedy Best First Algorithm does not support adding a flag.</p>
+        <h6><b>Visualize</b></h6>
+        <p>Click on the Virtualize Button to virtualize the algorithm and find the shortest path in the course</p>
+        <h6><b>Clear Board & Clear Path</b></h6>
+        <p>You can clear the current path, clear walls, clear the entire board all from the navbar. Clear board will clear all the walls and path. Clear path will clear the visualized path.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+	
+</div>
+
+<div id="snackbar">Dijkstra Algorithm Visualize!</div>
+<div id="snackbar1">DFS Algorithm Visualize!</div>
+<div id="snackbar2">BFS Algorithm Visualize!</div>
+
+<div class="head nobr" >
+		
+	<ul >
+		<li style="display:inline-block; list-style:none; padding:0 28px 0 0;" >
+			<div class="start nobr" style="display:inline-block; list-style:none; padding:0 28px 0 0px; margin-right: 10px;"></div>Start Node
+		</li>
+		<li style="display:inline-block;
+list-style:none;
+padding:0 28px 0 0;">
+			<div class="target" style="display:inline-block; list-style:none; padding:0 28px 0 0px; margin-right: 10px;"></div>  Target Node
+		</li>
+		<li style="display:inline-block;
+list-style:none;
+padding:0 28px 0 0;">
+
+			<div class="flag" style="display:inline-block; list-style:none; padding:0 28px 0 0px; margin-right: 10px;"></div>Flag Node
+		</li>
+		<li style="display:inline-block;
+list-style:none;
+padding:0 28px 0 0;">
+			<div class="unvisited" style="display:inline-block; list-style:none; padding:0 28px 0 0px; margin-right: 10px;"></div>Unvisited Nodes
+		</li>
+		<li style="display:inline-block;
+list-style:none;
+padding:0 28px 0 0;">
+			<div class=" unvisited" style="background-color: rgba(0, 190, 218, 0.75); display:inline-block; list-style:none; padding:0 28px 0 0px; margin-right: 10px;"></div><div class=" unvisited" style="background-color: rgb(172, 107, 237); display:inline-block; list-style:none; padding:0 28px 0 0px; margin-right: 10px;"></div>Visited Nodes
+		</li>
+		<li style="display:inline-block;
+list-style:none;
+padding:0 28px 0 0;">
+			<div class="unvisited" style="background-color: rgb(255, 254, 106); display:inline-block; list-style:none; padding:0 28px 0 0px; margin-right: 10px;"></div><div class=" unvisited" style="background-color: #fc8414; display:inline-block; list-style:none; padding:0 28px 0 0px; margin-right: 10px;"></div>Shortest-Path Node
+		</li>
+		<li style="display:inline-block;
+list-style:none;
+padding:0 28px 0 0;">
+			<div class="wall unvisited" style="display:inline-block; list-style:none; padding:0 28px 0 0px; margin-right: 10px;"></div>Wall Node
+		</li>
+	</ul>
+
+</div>
+
+<table id="board">
+	<tbody>
+		 
+		<tr id="row 0">
+			<td id="0-0" class="unvisited"></td>
+			<td id="0-1" class="unvisited"></td>
+			<td id="0-2" class="unvisited"></td>
+			<td id="0-3" class="unvisited"></td>
+			<td id="0-4" class="unvisited"></td>
+			<td id="0-5" class="unvisited"></td>
+			<td id="0-6" class="unvisited"></td>
+			<td id="0-7" class="unvisited"></td>
+			<td id="0-8" class="unvisited"></td>
+			<td id="0-9" class="unvisited"></td>
+			<td id="0-10" class="unvisited"></td>
+			<td id="0-11" class="unvisited"></td>
+			<td id="0-12" class="unvisited"></td>
+			<td id="0-13" class="unvisited"></td>
+			<td id="0-14" class="unvisited"></td>
+			<td id="0-15" class="unvisited"></td>
+			<td id="0-16" class="unvisited"></td>
+			<td id="0-17" class="unvisited"></td>
+			<td id="0-18" class="unvisited"></td>
+			<td id="0-19" class="unvisited"></td>
+			<td id="0-20" class="unvisited"></td>
+			<td id="0-21" class="unvisited"></td>
+			<td id="0-22" class="unvisited"></td>
+			<td id="0-23" class="unvisited"></td>
+			<td id="0-24" class="unvisited"></td>
+			<td id="0-25" class="unvisited"></td>
+			<td id="0-26" class="unvisited"></td>
+			<td id="0-27" class="unvisited"></td>
+			<td id="0-28" class="unvisited"></td>
+			<td id="0-29" class="unvisited"></td>
+			<td id="0-30" class="unvisited"></td>
+			<td id="0-31" class="unvisited"></td>
+			<td id="0-32" class="unvisited"></td>
+			<td id="0-33" class="unvisited"></td>
+			<td id="0-34" class="unvisited"></td>
+			<td id="0-35" class="unvisited"></td>
+			<td id="0-36" class="unvisited"></td>
+			<td id="0-37" class="unvisited"></td>
+			<td id="0-38" class="unvisited"></td>
+			<td id="0-39" class="unvisited"></td>
+			<td id="0-40" class="unvisited"></td>
+			<td id="0-41" class="unvisited"></td>
+			<td id="0-42" class="unvisited"></td>
+			<td id="0-43" class="unvisited"></td>
+			<td id="0-44" class="unvisited"></td>
+			<td id="0-45" class="unvisited"></td>
+			<td id="0-46" class="unvisited"></td>
+			<td id="0-47" class="unvisited"></td>
+			<td id="0-48" class="unvisited"></td>
+			<td id="0-49" class="unvisited"></td>
+			<td id="0-50" class="unvisited"></td>
+			<td id="0-51" class="unvisited"></td>
+			<td id="0-52" class="unvisited"></td>
+			<td id="0-53" class="unvisited"></td>
+			<td id="0-54" class="unvisited"></td>
+			<td id="0-55" class="unvisited"></td>
+			<td id="0-56" class="unvisited"></td>
+			<td id="0-57" class="unvisited"></td>
+			<td id="0-58" class="unvisited"></td>
+			<td id="0-59" class="unvisited"></td>
+		</tr>
+		<tr id="row 1">
+			<td id="1-0" class="unvisited"></td>
+			<td id="1-1" class="unvisited"></td>
+			<td id="1-2" class="unvisited"></td>
+			<td id="1-3" class="unvisited"></td>
+			<td id="1-4" class="unvisited"></td>
+			<td id="1-5" class="unvisited"></td>
+			<td id="1-6" class="unvisited"></td>
+			<td id="1-7" class="unvisited"></td>
+			<td id="1-8" class="unvisited"></td>
+			<td id="1-9" class="unvisited"></td>
+			<td id="1-10" class="unvisited"></td>
+			<td id="1-11" class="unvisited"></td>
+			<td id="1-12" class="unvisited"></td>
+			<td id="1-13" class="unvisited"></td>
+			<td id="1-14" class="unvisited"></td>
+			<td id="1-15" class="unvisited"></td>
+			<td id="1-16" class="unvisited"></td>
+			<td id="1-17" class="unvisited"></td>
+			<td id="1-18" class="unvisited"></td>
+			<td id="1-19" class="unvisited"></td>
+			<td id="1-20" class="unvisited"></td>
+			<td id="1-21" class="unvisited"></td>
+			<td id="1-22" class="unvisited"></td>
+			<td id="1-23" class="unvisited"></td>
+			<td id="1-24" class="unvisited"></td>
+			<td id="1-25" class="unvisited"></td>
+			<td id="1-26" class="unvisited"></td>
+			<td id="1-27" class="unvisited"></td>
+			<td id="1-28" class="unvisited"></td>
+			<td id="1-29" class="unvisited"></td>
+			<td id="1-30" class="unvisited"></td>
+			<td id="1-31" class="unvisited"></td>
+			<td id="1-32" class="unvisited"></td>
+			<td id="1-33" class="unvisited"></td>
+			<td id="1-34" class="unvisited"></td>
+			<td id="1-35" class="unvisited"></td>
+			<td id="1-36" class="unvisited"></td>
+			<td id="1-37" class="unvisited"></td>
+			<td id="1-38" class="unvisited"></td>
+			<td id="1-39" class="unvisited"></td>
+			<td id="1-40" class="unvisited"></td>
+			<td id="1-41" class="unvisited"></td>
+			<td id="1-42" class="unvisited"></td>
+			<td id="1-43" class="unvisited"></td>
+			<td id="1-44" class="unvisited"></td>
+			<td id="1-45" class="unvisited"></td>
+			<td id="1-46" class="unvisited"></td>
+			<td id="1-47" class="unvisited"></td>
+			<td id="1-48" class="unvisited"></td>
+			<td id="1-49" class="unvisited"></td>
+			<td id="1-50" class="unvisited"></td>
+			<td id="1-51" class="unvisited"></td>
+			<td id="1-52" class="unvisited"></td>
+			<td id="1-53" class="unvisited"></td>
+			<td id="1-54" class="unvisited"></td>
+			<td id="1-55" class="unvisited"></td>
+			<td id="1-56" class="unvisited"></td>
+			<td id="1-57" class="unvisited"></td>
+			<td id="1-58" class="unvisited"></td>
+			<td id="1-59" class="unvisited"></td>
+		</tr>
+		<tr id="row 2">
+			<td id="2-0" class="unvisited"></td>
+			<td id="2-1" class="unvisited"></td>
+			<td id="2-2" class="unvisited"></td>
+			<td id="2-3" class="unvisited"></td>
+			<td id="2-4" class="unvisited"></td>
+			<td id="2-5" class="unvisited"></td>
+			<td id="2-6" class="unvisited"></td>
+			<td id="2-7" class="unvisited"></td>
+			<td id="2-8" class="unvisited"></td>
+			<td id="2-9" class="unvisited"></td>
+			<td id="2-10" class="unvisited"></td>
+			<td id="2-11" class="unvisited"></td>
+			<td id="2-12" class="unvisited"></td>
+			<td id="2-13" class="unvisited"></td>
+			<td id="2-14" class="unvisited"></td>
+			<td id="2-15" class="unvisited"></td>
+			<td id="2-16" class="unvisited"></td>
+			<td id="2-17" class="unvisited"></td>
+			<td id="2-18" class="unvisited"></td>
+			<td id="2-19" class="unvisited"></td>
+			<td id="2-20" class="unvisited"></td>
+			<td id="2-21" class="unvisited"></td>
+			<td id="2-22" class="unvisited"></td>
+			<td id="2-23" class="unvisited"></td>
+			<td id="2-24" class="unvisited"></td>
+			<td id="2-25" class="unvisited"></td>
+			<td id="2-26" class="unvisited"></td>
+			<td id="2-27" class="unvisited"></td>
+			<td id="2-28" class="unvisited"></td>
+			<td id="2-29" class="unvisited"></td>
+			<td id="2-30" class="unvisited"></td>
+			<td id="2-31" class="unvisited"></td>
+			<td id="2-32" class="unvisited"></td>
+			<td id="2-33" class="unvisited"></td>
+			<td id="2-34" class="unvisited"></td>
+			<td id="2-35" class="unvisited"></td>
+			<td id="2-36" class="unvisited"></td>
+			<td id="2-37" class="unvisited"></td>
+			<td id="2-38" class="unvisited"></td>
+			<td id="2-39" class="unvisited"></td>
+			<td id="2-40" class="unvisited"></td>
+			<td id="2-41" class="unvisited"></td>
+			<td id="2-42" class="unvisited"></td>
+			<td id="2-43" class="unvisited"></td>
+			<td id="2-44" class="unvisited"></td>
+			<td id="2-45" class="unvisited"></td>
+			<td id="2-46" class="unvisited"></td>
+			<td id="2-47" class="unvisited"></td>
+			<td id="2-48" class="unvisited"></td>
+			<td id="2-49" class="unvisited"></td>
+			<td id="2-50" class="unvisited"></td>
+			<td id="2-51" class="unvisited"></td>
+			<td id="2-52" class="unvisited"></td>
+			<td id="2-53" class="unvisited"></td>
+			<td id="2-54" class="unvisited"></td>
+			<td id="2-55" class="unvisited"></td>
+			<td id="2-56" class="unvisited"></td>
+			<td id="2-57" class="unvisited"></td>
+			<td id="2-58" class="unvisited"></td>
+			<td id="2-59" class="unvisited"></td>
+		</tr>
+		<!-- ----------------- -->
+		<tr id="row 3">
+			<td id="3-0" class="unvisited"></td>
+			<td id="3-1" class="unvisited"></td>
+			<td id="3-2" class="unvisited"></td>
+			<td id="3-3" class="unvisited"></td>
+			<td id="3-4" class="unvisited"></td>
+			<td id="3-5" class="unvisited"></td>
+			<td id="3-6" class="unvisited"></td>
+			<td id="3-7" class="unvisited"></td>
+			<td id="3-8" class="unvisited"></td>
+			<td id="3-9" class="unvisited"></td>
+			<td id="3-10" class="unvisited"></td>
+			<td id="3-11" class="unvisited"></td>
+			<td id="3-12" class="unvisited"></td>
+			<td id="3-13" class="unvisited"></td>
+			<td id="3-14" class="unvisited"></td>
+			<td id="3-15" class="unvisited"></td>
+			<td id="3-16" class="unvisited"></td>
+			<td id="3-17" class="unvisited"></td>
+			<td id="3-18" class="unvisited"></td>
+			<td id="3-19" class="unvisited"></td>
+			<td id="3-20" class="unvisited"></td>
+			<td id="3-21" class="unvisited"></td>
+			<td id="3-22" class="unvisited"></td>
+			<td id="3-23" class="unvisited"></td>
+			<td id="3-24" class="unvisited"></td>
+			<td id="3-25" class="unvisited"></td>
+			<td id="3-26" class="unvisited"></td>
+			<td id="3-27" class="unvisited"></td>
+			<td id="3-28" class="unvisited"></td>
+			<td id="3-29" class="unvisited"></td>
+			<td id="3-30" class="unvisited"></td>
+			<td id="3-31" class="unvisited"></td>
+			<td id="3-32" class="unvisited"></td>
+			<td id="3-33" class="unvisited"></td>
+			<td id="3-34" class="unvisited"></td>
+			<td id="3-35" class="unvisited"></td>
+			<td id="3-36" class="unvisited"></td>
+			<td id="3-37" class="unvisited"></td>
+			<td id="3-38" class="unvisited"></td>
+			<td id="3-39" class="unvisited"></td>
+			<td id="3-40" class="unvisited"></td>
+			<td id="3-41" class="unvisited"></td>
+			<td id="3-42" class="unvisited"></td>
+			<td id="3-43" class="unvisited"></td>
+			<td id="3-44" class="unvisited"></td>
+			<td id="3-45" class="unvisited"></td>
+			<td id="3-46" class="unvisited"></td>
+			<td id="3-47" class="unvisited"></td>
+			<td id="3-48" class="unvisited"></td>
+			<td id="3-49" class="unvisited"></td>
+			<td id="3-50" class="unvisited"></td>
+			<td id="3-51" class="unvisited"></td>
+			<td id="3-52" class="unvisited"></td>
+			<td id="3-53" class="unvisited"></td>
+			<td id="3-54" class="unvisited"></td>
+			<td id="3-55" class="unvisited"></td>
+			<td id="3-56" class="unvisited"></td>
+			<td id="3-57" class="unvisited"></td>
+			<td id="3-58" class="unvisited"></td>
+			<td id="3-59" class="unvisited"></td>
+		</tr>
+		<tr id="row 4">
+			<td id="4-0" class="unvisited"></td>
+			<td id="4-1" class="unvisited"></td>
+			<td id="4-2" class="unvisited"></td>
+			<td id="4-3" class="unvisited"></td>
+			<td id="4-4" class="unvisited"></td>
+			<td id="4-5" class="unvisited"></td>
+			<td id="4-6" class="unvisited"></td>
+			<td id="4-7" class="unvisited"></td>
+			<td id="4-8" class="unvisited"></td>
+			<td id="4-9" class="unvisited"></td>
+			<td id="4-10" class="unvisited"></td>
+			<td id="4-11" class="unvisited"></td>
+			<td id="4-12" class="unvisited"></td>
+			<td id="4-13" class="unvisited"></td>
+			<td id="4-14" class="unvisited"></td>
+			<td id="4-15" class="unvisited"></td>
+			<td id="4-16" class="unvisited"></td>
+			<td id="4-17" class="unvisited"></td>
+			<td id="4-18" class="unvisited"></td>
+			<td id="4-19" class="unvisited"></td>
+			<td id="4-20" class="unvisited"></td>
+			<td id="4-21" class="unvisited"></td>
+			<td id="4-22" class="unvisited"></td>
+			<td id="4-23" class="unvisited"></td>
+			<td id="4-24" class="unvisited"></td>
+			<td id="4-25" class="unvisited"></td>
+			<td id="4-26" class="unvisited"></td>
+			<td id="4-27" class="unvisited"></td>
+			<td id="4-28" class="unvisited"></td>
+			<td id="4-29" class="unvisited"></td>
+			<td id="4-30" class="unvisited"></td>
+			<td id="4-31" class="unvisited"></td>
+			<td id="4-32" class="unvisited"></td>
+			<td id="4-33" class="unvisited"></td>
+			<td id="4-34" class="unvisited"></td>
+			<td id="4-35" class="unvisited"></td>
+			<td id="4-36" class="unvisited"></td>
+			<td id="4-37" class="unvisited"></td>
+			<td id="4-38" class="unvisited"></td>
+			<td id="4-39" class="unvisited"></td>
+			<td id="4-40" class="unvisited"></td>
+			<td id="4-41" class="unvisited"></td>
+			<td id="4-42" class="unvisited"></td>
+			<td id="4-43" class="unvisited"></td>
+			<td id="4-44" class="unvisited"></td>
+			<td id="4-45" class="unvisited"></td>
+			<td id="4-46" class="unvisited"></td>
+			<td id="4-47" class="unvisited"></td>
+			<td id="4-48" class="unvisited"></td>
+			<td id="4-49" class="unvisited"></td>
+			<td id="4-50" class="unvisited"></td>
+			<td id="4-51" class="unvisited"></td>
+			<td id="4-52" class="unvisited"></td>
+			<td id="4-53" class="unvisited"></td>
+			<td id="4-54" class="unvisited"></td>
+			<td id="4-55" class="unvisited"></td>
+			<td id="4-56" class="unvisited"></td>
+			<td id="4-57" class="unvisited"></td>
+			<td id="4-58" class="unvisited"></td>
+			<td id="4-59" class="unvisited"></td>
+		</tr>
+		<tr id="row 5">
+			<td id="5-0" class="unvisited"></td>
+			<td id="5-1" class="unvisited"></td>
+			<td id="5-2" class="unvisited"></td>
+			<td id="5-3" class="unvisited"></td>
+			<td id="5-4" class="unvisited"></td>
+			<td id="5-5" class="unvisited"></td>
+			<td id="5-6" class="unvisited"></td>
+			<td id="5-7" class="unvisited"></td>
+			<td id="5-8" class="unvisited"></td>
+			<td id="5-9" class="unvisited"></td>
+			<td id="5-10" class="unvisited"></td>
+			<td id="5-11" class="unvisited"></td>
+			<td id="5-12" class="unvisited"></td>
+			<td id="5-13" class="unvisited"></td>
+			<td id="5-14" class="unvisited"></td>
+			<td id="5-15" class="unvisited"></td>
+			<td id="5-16" class="unvisited"></td>
+			<td id="5-17" class="unvisited"></td>
+			<td id="5-18" class="unvisited"></td>
+			<td id="5-19" class="unvisited"></td>
+			<td id="5-20" class="unvisited"></td>
+			<td id="5-21" class="unvisited"></td>
+			<td id="5-22" class="unvisited"></td>
+			<td id="5-23" class="unvisited"></td>
+			<td id="5-24" class="unvisited"></td>
+			<td id="5-25" class="unvisited"></td>
+			<td id="5-26" class="unvisited"></td>
+			<td id="5-27" class="unvisited"></td>
+			<td id="5-28" class="unvisited"></td>
+			<td id="5-29" class="unvisited"></td>
+			<td id="5-30" class="unvisited"></td>
+			<td id="5-31" class="unvisited"></td>
+			<td id="5-32" class="unvisited"></td>
+			<td id="5-33" class="unvisited"></td>
+			<td id="5-34" class="unvisited"></td>
+			<td id="5-35" class="unvisited"></td>
+			<td id="5-36" class="unvisited"></td>
+			<td id="5-37" class="unvisited"></td>
+			<td id="5-38" class="unvisited"></td>
+			<td id="5-39" class="unvisited"></td>
+			<td id="5-40" class="unvisited"></td>
+			<td id="5-41" class="unvisited"></td>
+			<td id="5-42" class="unvisited"></td>
+			<td id="5-43" class="unvisited"></td>
+			<td id="5-44" class="unvisited"></td>
+			<td id="5-45" class="unvisited"></td>
+			<td id="5-46" class="unvisited"></td>
+			<td id="5-47" class="unvisited"></td>
+			<td id="5-48" class="unvisited"></td>
+			<td id="5-49" class="unvisited"></td>
+			<td id="5-50" class="unvisited"></td>
+			<td id="5-51" class="unvisited"></td>
+			<td id="5-52" class="unvisited"></td>
+			<td id="5-53" class="unvisited"></td>
+			<td id="5-54" class="unvisited"></td>
+			<td id="5-55" class="unvisited"></td>
+			<td id="5-56" class="unvisited"></td>
+			<td id="5-57" class="unvisited"></td>
+			<td id="5-58" class="unvisited"></td>
+			<td id="5-59" class="unvisited"></td>
+		</tr>
+		<!-- --------------------- -->
+		<tr id="row 6">
+			<td id="6-0" class="unvisited"></td>
+			<td id="6-1" class="unvisited"></td>
+			<td id="6-2" class="unvisited"></td>
+			<td id="6-3" class="unvisited"></td>
+			<td id="6-4" class="unvisited"></td>
+			<td id="6-5" class="unvisited"></td>
+			<td id="6-6" class="unvisited"></td>
+			<td id="6-7" class="unvisited"></td>
+			<td id="6-8" class="unvisited"></td>
+			<td id="6-9" class="unvisited"></td>
+			<td id="6-10" class="unvisited"></td>
+			<td id="6-11" class="unvisited"></td>
+			<td id="6-12" class="unvisited"></td>
+			<td id="6-13" class="unvisited"></td>
+			<td id="6-14" class="unvisited"></td>
+			<td id="6-15" class="unvisited"></td>
+			<td id="6-16" class="unvisited"></td>
+			<td id="6-17" class="unvisited"></td>
+			<td id="6-18" class="unvisited"></td>
+			<td id="6-19" class="unvisited"></td>
+			<td id="6-20" class="unvisited"></td>
+			<td id="6-21" class="unvisited"></td>
+			<td id="6-22" class="unvisited"></td>
+			<td id="6-23" class="unvisited"></td>
+			<td id="6-24" class="unvisited"></td>
+			<td id="6-25" class="unvisited"></td>
+			<td id="6-26" class="unvisited"></td>
+			<td id="6-27" class="unvisited"></td>
+			<td id="6-28" class="unvisited"></td>
+			<td id="6-29" class="unvisited"></td>
+			<td id="6-30" class="unvisited"></td>
+			<td id="6-31" class="unvisited"></td>
+			<td id="6-32" class="unvisited"></td>
+			<td id="6-33" class="unvisited"></td>
+			<td id="6-34" class="unvisited"></td>
+			<td id="6-35" class="unvisited"></td>
+			<td id="6-36" class="unvisited"></td>
+			<td id="6-37" class="unvisited"></td>
+			<td id="6-38" class="unvisited"></td>
+			<td id="6-39" class="unvisited"></td>
+			<td id="6-40" class="unvisited"></td>
+			<td id="6-41" class="unvisited"></td>
+			<td id="6-42" class="unvisited"></td>
+			<td id="6-43" class="unvisited"></td>
+			<td id="6-44" class="unvisited"></td>
+			<td id="6-45" class="unvisited"></td>
+			<td id="6-46" class="unvisited"></td>
+			<td id="6-47" class="unvisited"></td>
+			<td id="6-48" class="unvisited"></td>
+			<td id="6-49" class="unvisited"></td>
+			<td id="6-50" class="unvisited"></td>
+			<td id="6-51" class="unvisited"></td>
+			<td id="6-52" class="unvisited"></td>
+			<td id="6-53" class="unvisited"></td>
+			<td id="6-54" class="unvisited"></td>
+			<td id="6-55" class="unvisited"></td>
+			<td id="6-56" class="unvisited"></td>
+			<td id="6-57" class="unvisited"></td>
+			<td id="6-58" class="unvisited"></td>
+			<td id="6-59" class="unvisited"></td>
+		</tr>
+		<tr id="row 7">
+			<td id="7-0" class="unvisited"></td>
+			<td id="7-1" class="unvisited"></td>
+			<td id="7-2" class="unvisited"></td>
+			<td id="7-3" class="unvisited"></td>
+			<td id="7-4" class="unvisited"></td>
+			<td id="7-5" class="unvisited"></td>
+			<td id="7-6" class="unvisited"></td>
+			<td id="7-7" class="unvisited"></td>
+			<td id="7-8" class="unvisited"></td>
+			<td id="7-9" class="unvisited"></td>
+			<td id="7-10" class="unvisited"></td>
+			<td id="7-11" class="unvisited"></td>
+			<td id="7-12" class="unvisited"></td>
+			<td id="7-13" class="unvisited"></td>
+			<td id="7-14" class="unvisited"></td>
+			<td id="7-15" class="unvisited"></td>
+			<td id="7-16" class="unvisited"></td>
+			<td id="7-17" class="unvisited"></td>
+			<td id="7-18" class="unvisited"></td>
+			<td id="7-19" class="unvisited"></td>
+			<td id="7-20" class="unvisited"></td>
+			<td id="7-21" class="unvisited"></td>
+			<td id="7-22" class="unvisited"></td>
+			<td id="7-23" class="unvisited"></td>
+			<td id="7-24" class="unvisited"></td>
+			<td id="7-25" class="unvisited"></td>
+			<td id="7-26" class="unvisited"></td>
+			<td id="7-27" class="unvisited"></td>
+			<td id="7-28" class="unvisited"></td>
+			<td id="7-29" class="unvisited"></td>
+			<td id="7-30" class="unvisited"></td>
+			<td id="7-31" class="unvisited"></td>
+			<td id="7-32" class="unvisited"></td>
+			<td id="7-33" class="unvisited"></td>
+			<td id="7-34" class="unvisited"></td>
+			<td id="7-35" class="unvisited"></td>
+			<td id="7-36" class="unvisited"></td>
+			<td id="7-37" class="unvisited"></td>
+			<td id="7-38" class="unvisited"></td>
+			<td id="7-39" class="unvisited"></td>
+			<td id="7-40" class="unvisited"></td>
+			<td id="7-41" class="unvisited"></td>
+			<td id="7-42" class="unvisited"></td>
+			<td id="7-43" class="unvisited"></td>
+			<td id="7-44" class="unvisited"></td>
+			<td id="7-45" class="unvisited"></td>
+			<td id="7-46" class="unvisited"></td>
+			<td id="7-47" class="unvisited"></td>
+			<td id="7-48" class="unvisited"></td>
+			<td id="7-49" class="unvisited"></td>
+			<td id="7-50" class="unvisited"></td>
+			<td id="7-51" class="unvisited"></td>
+			<td id="7-52" class="unvisited"></td>
+			<td id="7-53" class="unvisited"></td>
+			<td id="7-54" class="unvisited"></td>
+			<td id="7-55" class="unvisited"></td>
+			<td id="7-56" class="unvisited"></td>
+			<td id="7-57" class="unvisited"></td>
+			<td id="7-58" class="unvisited"></td>
+			<td id="7-59" class="unvisited"></td>
+		</tr>
+		<tr id="row 8">
+			<td id="8-0" class="unvisited"></td>
+			<td id="8-1" class="unvisited"></td>
+			<td id="8-2" class="unvisited"></td>
+			<td id="8-3" class="unvisited"></td>
+			<td id="8-4" class="unvisited"></td>
+			<td id="8-5" class="unvisited"></td>
+			<td id="8-6" class="unvisited"></td>
+			<td id="8-7" class="unvisited"></td>
+			<td id="8-8" class="unvisited"></td>
+			<td id="8-9" class="unvisited"></td>
+			<td id="8-10" class="unvisited"></td>
+			<td id="8-11" class="unvisited"></td>
+			<td id="8-12" class="unvisited"></td>
+			<td id="8-13" class="unvisited"></td>
+			<td id="8-14" class="unvisited"></td>
+			<td id="8-15" class="unvisited"></td>
+			<td id="8-16" class="unvisited"></td>
+			<td id="8-17" class="unvisited"></td>
+			<td id="8-18" class="unvisited"></td>
+			<td id="8-19" class="unvisited"></td>
+			<td id="8-20" class="unvisited"></td>
+			<td id="8-21" class="unvisited"></td>
+			<td id="8-22" class="unvisited"></td>
+			<td id="8-23" class="unvisited"></td>
+			<td id="8-24" class="unvisited"></td>
+			<td id="8-25" class="unvisited"></td>
+			<td id="8-26" class="unvisited"></td>
+			<td id="8-27" class="unvisited"></td>
+			<td id="8-28" class="unvisited"></td>
+			<td id="8-29" class="unvisited"></td>
+			<td id="8-30" class="unvisited"></td>
+			<td id="8-31" class="unvisited"></td>
+			<td id="8-32" class="unvisited"></td>
+			<td id="8-33" class="unvisited"></td>
+			<td id="8-34" class="unvisited"></td>
+			<td id="8-35" class="unvisited"></td>
+			<td id="8-36" class="unvisited"></td>
+			<td id="8-37" class="unvisited"></td>
+			<td id="8-38" class="unvisited"></td>
+			<td id="8-39" class="unvisited"></td>
+			<td id="8-40" class="unvisited"></td>
+			<td id="8-41" class="unvisited"></td>
+			<td id="8-42" class="unvisited"></td>
+			<td id="8-43" class="unvisited"></td>
+			<td id="8-44" class="unvisited"></td>
+			<td id="8-45" class="unvisited"></td>
+			<td id="8-46" class="unvisited"></td>
+			<td id="8-47" class="unvisited"></td>
+			<td id="8-48" class="unvisited"></td>
+			<td id="8-49" class="unvisited"></td>
+			<td id="8-50" class="unvisited"></td>
+			<td id="8-51" class="unvisited"></td>
+			<td id="8-52" class="unvisited"></td>
+			<td id="8-53" class="unvisited"></td>
+			<td id="8-54" class="unvisited"></td>
+			<td id="8-55" class="unvisited"></td>
+			<td id="8-56" class="unvisited"></td>
+			<td id="8-57" class="unvisited"></td>
+			<td id="8-58" class="unvisited"></td>
+			<td id="8-59" class="unvisited"></td>
+		</tr>
+		<!-- ----------------- -->
+		<tr id="row 9">
+			<td id="9-0" class="unvisited"></td>
+			<td id="9-1" class="unvisited"></td>
+			<td id="9-2" class="unvisited"></td>
+			<td id="9-3" class="unvisited"></td>
+			<td id="9-4" class="unvisited"></td>
+			<td id="9-5" class="unvisited"></td>
+			<td id="9-6" class="unvisited"></td>
+			<td id="9-7" class="unvisited"></td>
+			<td id="9-8" class="unvisited"></td>
+			<td id="9-9" class="unvisited"></td>
+			<td id="9-10" class="unvisited"></td>
+			<td id="9-11" class="unvisited"></td>
+			<td id="9-12" class="unvisited"></td>
+			<td id="9-13" class="unvisited"></td>
+			<td id="9-14" class="unvisited"></td>
+			<td id="9-15" class="start"></td>
+			<td id="9-16" class="unvisited"></td>
+			<td id="9-17" class="unvisited"></td>
+			<td id="9-18" class="unvisited"></td>
+			<td id="9-19" class="unvisited"></td>
+			<td id="9-20" class="unvisited"></td>
+			<td id="9-21" class="unvisited"></td>
+			<td id="9-22" class="unvisited"></td>
+			<td id="9-23" class="unvisited"></td>
+			<td id="9-24" class="unvisited"></td>
+			<td id="9-25" class="unvisited"></td>
+			<td id="9-26" class="unvisited"></td>
+			<td id="9-27" class="unvisited"></td>
+			<td id="9-28" class="unvisited"></td>
+			<td id="9-29" class="unvisited"></td>
+			<td id="9-30" class="unvisited"></td>
+			<td id="9-31" class="unvisited"></td>
+			<td id="9-32" class="unvisited"></td>
+			<td id="9-33" class="unvisited"></td>
+			<td id="9-34" class="unvisited"></td>
+			<td id="9-35" class="unvisited"></td>
+			<td id="9-36" class="unvisited"></td>
+			<td id="9-37" class="unvisited"></td>
+			<td id="9-38" class="unvisited"></td>
+			<td id="9-39" class="unvisited"></td>
+			<td id="9-40" class="unvisited"></td>
+			<td id="9-41" class="unvisited"></td>
+			<td id="9-42" class="unvisited"></td>
+			<td id="9-43" class="unvisited"></td>
+			<td id="9-44" class="unvisited"></td>
+			<td id="9-45" class="target"></td>
+			<td id="9-46" class="unvisited"></td>
+			<td id="9-47" class="unvisited"></td>
+			<td id="9-48" class="unvisited"></td>
+			<td id="9-49" class="unvisited"></td>
+			<td id="9-50" class="unvisited"></td>
+			<td id="9-51" class="unvisited"></td>
+			<td id="9-52" class="unvisited"></td>
+			<td id="9-53" class="unvisited"></td>
+			<td id="9-54" class="unvisited"></td>
+			<td id="9-55" class="unvisited"></td>
+			<td id="9-56" class="unvisited"></td>
+			<td id="9-57" class="unvisited"></td>
+			<td id="9-58" class="unvisited"></td>
+			<td id="9-59" class="unvisited"></td>
+		</tr>
+		<tr id="row 10">
+			<td id="10-0" class="unvisited"></td>
+			<td id="10-1" class="unvisited"></td>
+			<td id="10-2" class="unvisited"></td>
+			<td id="10-3" class="unvisited"></td>
+			<td id="10-4" class="unvisited"></td>
+			<td id="10-5" class="unvisited"></td>
+			<td id="10-6" class="unvisited"></td>
+			<td id="10-7" class="unvisited"></td>
+			<td id="10-8" class="unvisited"></td>
+			<td id="10-9" class="unvisited"></td>
+			<td id="10-10" class="unvisited"></td>
+			<td id="10-11" class="unvisited"></td>
+			<td id="10-12" class="unvisited"></td>
+			<td id="10-13" class="unvisited"></td>
+			<td id="10-14" class="unvisited"></td>
+			<td id="10-15" class="unvisited"></td>
+			<td id="10-16" class="unvisited"></td>
+			<td id="10-17" class="unvisited"></td>
+			<td id="10-18" class="unvisited"></td>
+			<td id="10-19" class="unvisited"></td>
+			<td id="10-20" class="unvisited"></td>
+			<td id="10-21" class="unvisited"></td>
+			<td id="10-22" class="unvisited"></td>
+			<td id="10-23" class="unvisited"></td>
+			<td id="10-24" class="unvisited"></td>
+			<td id="10-25" class="unvisited"></td>
+			<td id="10-26" class="unvisited"></td>
+			<td id="10-27" class="unvisited"></td>
+			<td id="10-28" class="unvisited"></td>
+			<td id="10-29" class="unvisited"></td>
+			<td id="10-30" class="unvisited"></td>
+			<td id="10-31" class="unvisited"></td>
+			<td id="10-32" class="unvisited"></td>
+			<td id="10-33" class="unvisited"></td>
+			<td id="10-34" class="unvisited"></td>
+			<td id="10-35" class="unvisited"></td>
+			<td id="10-36" class="unvisited"></td>
+			<td id="10-37" class="unvisited"></td>
+			<td id="10-38" class="unvisited"></td>
+			<td id="10-39" class="unvisited"></td>
+			<td id="10-40" class="unvisited"></td>
+			<td id="10-41" class="unvisited"></td>
+			<td id="10-42" class="unvisited"></td>
+			<td id="10-43" class="unvisited"></td>
+			<td id="10-44" class="unvisited"></td>
+			<td id="10-45" class="unvisited"></td>
+			<td id="10-46" class="unvisited"></td>
+			<td id="10-47" class="unvisited"></td>
+			<td id="10-48" class="unvisited"></td>
+			<td id="10-49" class="unvisited"></td>
+			<td id="10-50" class="unvisited"></td>
+			<td id="10-51" class="unvisited"></td>
+			<td id="10-52" class="unvisited"></td>
+			<td id="10-53" class="unvisited"></td>
+			<td id="10-54" class="unvisited"></td>
+			<td id="10-55" class="unvisited"></td>
+			<td id="10-56" class="unvisited"></td>
+			<td id="10-57" class="unvisited"></td>
+			<td id="10-58" class="unvisited"></td>
+			<td id="10-59" class="unvisited"></td>
+		</tr>
+		<tr id="row 11">
+			<td id="11-0" class="unvisited"></td>
+			<td id="11-1" class="unvisited"></td>
+			<td id="11-2" class="unvisited"></td>
+			<td id="11-3" class="unvisited"></td>
+			<td id="11-4" class="unvisited"></td>
+			<td id="11-5" class="unvisited"></td>
+			<td id="11-6" class="unvisited"></td>
+			<td id="11-7" class="unvisited"></td>
+			<td id="11-8" class="unvisited"></td>
+			<td id="11-9" class="unvisited"></td>
+			<td id="11-10" class="unvisited"></td>
+			<td id="11-11" class="unvisited"></td>
+			<td id="11-12" class="unvisited"></td>
+			<td id="11-13" class="unvisited"></td>
+			<td id="11-14" class="unvisited"></td>
+			<td id="11-15" class="unvisited"></td>
+			<td id="11-16" class="unvisited"></td>
+			<td id="11-17" class="unvisited"></td>
+			<td id="11-18" class="unvisited"></td>
+			<td id="11-19" class="unvisited"></td>
+			<td id="11-20" class="unvisited"></td>
+			<td id="11-21" class="unvisited"></td>
+			<td id="11-22" class="unvisited"></td>
+			<td id="11-23" class="unvisited"></td>
+			<td id="11-24" class="unvisited"></td>
+			<td id="11-25" class="unvisited"></td>
+			<td id="11-26" class="unvisited"></td>
+			<td id="11-27" class="unvisited"></td>
+			<td id="11-28" class="unvisited"></td>
+			<td id="11-29" class="unvisited"></td>
+			<td id="11-30" class="unvisited"></td>
+			<td id="11-31" class="unvisited"></td>
+			<td id="11-32" class="unvisited"></td>
+			<td id="11-33" class="unvisited"></td>
+			<td id="11-34" class="unvisited"></td>
+			<td id="11-35" class="unvisited"></td>
+			<td id="11-36" class="unvisited"></td>
+			<td id="11-37" class="unvisited"></td>
+			<td id="11-38" class="unvisited"></td>
+			<td id="11-39" class="unvisited"></td>
+			<td id="11-40" class="unvisited"></td>
+			<td id="11-41" class="unvisited"></td>
+			<td id="11-42" class="unvisited"></td>
+			<td id="11-43" class="unvisited"></td>
+			<td id="11-44" class="unvisited"></td>
+			<td id="11-45" class="unvisited"></td>
+			<td id="11-46" class="unvisited"></td>
+			<td id="11-47" class="unvisited"></td>
+			<td id="11-48" class="unvisited"></td>
+			<td id="11-49" class="unvisited"></td>
+			<td id="11-50" class="unvisited"></td>
+			<td id="11-51" class="unvisited"></td>
+			<td id="11-52" class="unvisited"></td>
+			<td id="11-53" class="unvisited"></td>
+			<td id="11-54" class="unvisited"></td>
+			<td id="11-55" class="unvisited"></td>
+			<td id="11-56" class="unvisited"></td>
+			<td id="11-57" class="unvisited"></td>
+			<td id="11-58" class="unvisited"></td>
+			<td id="11-59" class="unvisited"></td>
+		</tr>
+		<!-- ----------------- -->
+		<tr id="row 12">
+			<td id="12-0" class="unvisited"></td>
+			<td id="12-1" class="unvisited"></td>
+			<td id="12-2" class="unvisited"></td>
+			<td id="12-3" class="unvisited"></td>
+			<td id="12-4" class="unvisited"></td>
+			<td id="12-5" class="unvisited"></td>
+			<td id="12-6" class="unvisited"></td>
+			<td id="12-7" class="unvisited"></td>
+			<td id="12-8" class="unvisited"></td>
+			<td id="12-9" class="unvisited"></td>
+			<td id="12-10" class="unvisited"></td>
+			<td id="12-11" class="unvisited"></td>
+			<td id="12-12" class="unvisited"></td>
+			<td id="12-13" class="unvisited"></td>
+			<td id="12-14" class="unvisited"></td>
+			<td id="12-15" class="unvisited"></td>
+			<td id="12-16" class="unvisited"></td>
+			<td id="12-17" class="unvisited"></td>
+			<td id="12-18" class="unvisited"></td>
+			<td id="12-19" class="unvisited"></td>
+			<td id="12-20" class="unvisited"></td>
+			<td id="12-21" class="unvisited"></td>
+			<td id="12-22" class="unvisited"></td>
+			<td id="12-23" class="unvisited"></td>
+			<td id="12-24" class="unvisited"></td>
+			<td id="12-25" class="unvisited"></td>
+			<td id="12-26" class="unvisited"></td>
+			<td id="12-27" class="unvisited"></td>
+			<td id="12-28" class="unvisited"></td>
+			<td id="12-29" class="unvisited"></td>
+			<td id="12-30" class="unvisited"></td>
+			<td id="12-31" class="unvisited"></td>
+			<td id="12-32" class="unvisited"></td>
+			<td id="12-33" class="unvisited"></td>
+			<td id="12-34" class="unvisited"></td>
+			<td id="12-35" class="unvisited"></td>
+			<td id="12-36" class="unvisited"></td>
+			<td id="12-37" class="unvisited"></td>
+			<td id="12-38" class="unvisited"></td>
+			<td id="12-39" class="unvisited"></td>
+			<td id="12-40" class="unvisited"></td>
+			<td id="12-41" class="unvisited"></td>
+			<td id="12-42" class="unvisited"></td>
+			<td id="12-43" class="unvisited"></td>
+			<td id="12-44" class="unvisited"></td>
+			<td id="12-45" class="unvisited"></td>
+			<td id="12-46" class="unvisited"></td>
+			<td id="12-47" class="unvisited"></td>
+			<td id="12-48" class="unvisited"></td>
+			<td id="12-49" class="unvisited"></td>
+			<td id="12-50" class="unvisited"></td>
+			<td id="12-51" class="unvisited"></td>
+			<td id="12-52" class="unvisited"></td>
+			<td id="12-53" class="unvisited"></td>
+			<td id="12-54" class="unvisited"></td>
+			<td id="12-55" class="unvisited"></td>
+			<td id="12-56" class="unvisited"></td>
+			<td id="12-57" class="unvisited"></td>
+			<td id="12-58" class="unvisited"></td>
+			<td id="12-59" class="unvisited"></td>
+		</tr>
+		<tr id="row 13">
+			<td id="13-0" class="unvisited"></td>
+			<td id="13-1" class="unvisited"></td>
+			<td id="13-2" class="unvisited"></td>
+			<td id="13-3" class="unvisited"></td>
+			<td id="13-4" class="unvisited"></td>
+			<td id="13-5" class="unvisited"></td>
+			<td id="13-6" class="unvisited"></td>
+			<td id="13-7" class="unvisited"></td>
+			<td id="13-8" class="unvisited"></td>
+			<td id="13-9" class="unvisited"></td>
+			<td id="13-10" class="unvisited"></td>
+			<td id="13-11" class="unvisited"></td>
+			<td id="13-12" class="unvisited"></td>
+			<td id="13-13" class="unvisited"></td>
+			<td id="13-14" class="unvisited"></td>
+			<td id="13-15" class="unvisited"></td>
+			<td id="13-16" class="unvisited"></td>
+			<td id="13-17" class="unvisited"></td>
+			<td id="13-18" class="unvisited"></td>
+			<td id="13-19" class="unvisited"></td>
+			<td id="13-20" class="unvisited"></td>
+			<td id="13-21" class="unvisited"></td>
+			<td id="13-22" class="unvisited"></td>
+			<td id="13-23" class="unvisited"></td>
+			<td id="13-24" class="unvisited"></td>
+			<td id="13-25" class="unvisited"></td>
+			<td id="13-26" class="unvisited"></td>
+			<td id="13-27" class="unvisited"></td>
+			<td id="13-28" class="unvisited"></td>
+			<td id="13-29" class="unvisited"></td>
+			<td id="13-30" class="unvisited"></td>
+			<td id="13-31" class="unvisited"></td>
+			<td id="13-32" class="unvisited"></td>
+			<td id="13-33" class="unvisited"></td>
+			<td id="13-34" class="unvisited"></td>
+			<td id="13-35" class="unvisited"></td>
+			<td id="13-36" class="unvisited"></td>
+			<td id="13-37" class="unvisited"></td>
+			<td id="13-38" class="unvisited"></td>
+			<td id="13-39" class="unvisited"></td>
+			<td id="13-40" class="unvisited"></td>
+			<td id="13-41" class="unvisited"></td>
+			<td id="13-42" class="unvisited"></td>
+			<td id="13-43" class="unvisited"></td>
+			<td id="13-44" class="unvisited"></td>
+			<td id="13-45" class="unvisited"></td>
+			<td id="13-46" class="unvisited"></td>
+			<td id="13-47" class="unvisited"></td>
+			<td id="13-48" class="unvisited"></td>
+			<td id="13-49" class="unvisited"></td>
+			<td id="13-50" class="unvisited"></td>
+			<td id="13-51" class="unvisited"></td>
+			<td id="13-52" class="unvisited"></td>
+			<td id="13-53" class="unvisited"></td>
+			<td id="13-54" class="unvisited"></td>
+			<td id="13-55" class="unvisited"></td>
+			<td id="13-56" class="unvisited"></td>
+			<td id="13-57" class="unvisited"></td>
+			<td id="13-58" class="unvisited"></td>
+			<td id="13-59" class="unvisited"></td>
+		</tr>
+		<tr id="row 14">
+			<td id="14-0" class="unvisited"></td>
+			<td id="14-1" class="unvisited"></td>
+			<td id="14-2" class="unvisited"></td>
+			<td id="14-3" class="unvisited"></td>
+			<td id="14-4" class="unvisited"></td>
+			<td id="14-5" class="unvisited"></td>
+			<td id="14-6" class="unvisited"></td>
+			<td id="14-7" class="unvisited"></td>
+			<td id="14-8" class="unvisited"></td>
+			<td id="14-9" class="unvisited"></td>
+			<td id="14-10" class="unvisited"></td>
+			<td id="14-11" class="unvisited"></td>
+			<td id="14-12" class="unvisited"></td>
+			<td id="14-13" class="unvisited"></td>
+			<td id="14-14" class="unvisited"></td>
+			<td id="14-15" class="unvisited"></td>
+			<td id="14-16" class="unvisited"></td>
+			<td id="14-17" class="unvisited"></td>
+			<td id="14-18" class="unvisited"></td>
+			<td id="14-19" class="unvisited"></td>
+			<td id="14-20" class="unvisited"></td>
+			<td id="14-21" class="unvisited"></td>
+			<td id="14-22" class="unvisited"></td>
+			<td id="14-23" class="unvisited"></td>
+			<td id="14-24" class="unvisited"></td>
+			<td id="14-25" class="unvisited"></td>
+			<td id="14-26" class="unvisited"></td>
+			<td id="14-27" class="unvisited"></td>
+			<td id="14-28" class="unvisited"></td>
+			<td id="14-29" class="unvisited"></td>
+			<td id="14-30" class="unvisited"></td>
+			<td id="14-31" class="unvisited"></td>
+			<td id="14-32" class="unvisited"></td>
+			<td id="14-33" class="unvisited"></td>
+			<td id="14-34" class="unvisited"></td>
+			<td id="14-35" class="unvisited"></td>
+			<td id="14-36" class="unvisited"></td>
+			<td id="14-37" class="unvisited"></td>
+			<td id="14-38" class="unvisited"></td>
+			<td id="14-39" class="unvisited"></td>
+			<td id="14-40" class="unvisited"></td>
+			<td id="14-41" class="unvisited"></td>
+			<td id="14-42" class="unvisited"></td>
+			<td id="14-43" class="unvisited"></td>
+			<td id="14-44" class="unvisited"></td>
+			<td id="14-45" class="unvisited"></td>
+			<td id="14-46" class="unvisited"></td>
+			<td id="14-47" class="unvisited"></td>
+			<td id="14-48" class="unvisited"></td>
+			<td id="14-49" class="unvisited"></td>
+			<td id="14-50" class="unvisited"></td>
+			<td id="14-51" class="unvisited"></td>
+			<td id="14-52" class="unvisited"></td>
+			<td id="14-53" class="unvisited"></td>
+			<td id="14-54" class="unvisited"></td>
+			<td id="14-55" class="unvisited"></td>
+			<td id="14-56" class="unvisited"></td>
+			<td id="14-57" class="unvisited"></td>
+			<td id="14-58" class="unvisited"></td>
+			<td id="14-59" class="unvisited"></td>
+		</tr>
+		<!-- ----------------- -->
+		<tr id="row 15">
+			<td id="15-0" class="unvisited"></td>
+			<td id="15-1" class="unvisited"></td>
+			<td id="15-2" class="unvisited"></td>
+			<td id="15-3" class="unvisited"></td>
+			<td id="15-4" class="unvisited"></td>
+			<td id="15-5" class="unvisited"></td>
+			<td id="15-6" class="unvisited"></td>
+			<td id="15-7" class="unvisited"></td>
+			<td id="15-8" class="unvisited"></td>
+			<td id="15-9" class="unvisited"></td>
+			<td id="15-10" class="unvisited"></td>
+			<td id="15-11" class="unvisited"></td>
+			<td id="15-12" class="unvisited"></td>
+			<td id="15-13" class="unvisited"></td>
+			<td id="15-14" class="unvisited"></td>
+			<td id="15-15" class="unvisited"></td>
+			<td id="15-16" class="unvisited"></td>
+			<td id="15-17" class="unvisited"></td>
+			<td id="15-18" class="unvisited"></td>
+			<td id="15-19" class="unvisited"></td>
+			<td id="15-20" class="unvisited"></td>
+			<td id="15-21" class="unvisited"></td>
+			<td id="15-22" class="unvisited"></td>
+			<td id="15-23" class="unvisited"></td>
+			<td id="15-24" class="unvisited"></td>
+			<td id="15-25" class="unvisited"></td>
+			<td id="15-26" class="unvisited"></td>
+			<td id="15-27" class="unvisited"></td>
+			<td id="15-28" class="unvisited"></td>
+			<td id="15-29" class="unvisited"></td>
+			<td id="15-30" class="unvisited"></td>
+			<td id="15-31" class="unvisited"></td>
+			<td id="15-32" class="unvisited"></td>
+			<td id="15-33" class="unvisited"></td>
+			<td id="15-34" class="unvisited"></td>
+			<td id="15-35" class="unvisited"></td>
+			<td id="15-36" class="unvisited"></td>
+			<td id="15-37" class="unvisited"></td>
+			<td id="15-38" class="unvisited"></td>
+			<td id="15-39" class="unvisited"></td>
+			<td id="15-40" class="unvisited"></td>
+			<td id="15-41" class="unvisited"></td>
+			<td id="15-42" class="unvisited"></td>
+			<td id="15-43" class="unvisited"></td>
+			<td id="15-44" class="unvisited"></td>
+			<td id="15-45" class="unvisited"></td>
+			<td id="15-46" class="unvisited"></td>
+			<td id="15-47" class="unvisited"></td>
+			<td id="15-48" class="unvisited"></td>
+			<td id="15-49" class="unvisited"></td>
+			<td id="15-50" class="unvisited"></td>
+			<td id="15-51" class="unvisited"></td>
+			<td id="15-52" class="unvisited"></td>
+			<td id="15-53" class="unvisited"></td>
+			<td id="15-54" class="unvisited"></td>
+			<td id="15-55" class="unvisited"></td>
+			<td id="15-56" class="unvisited"></td>
+			<td id="15-57" class="unvisited"></td>
+			<td id="15-58" class="unvisited"></td>
+			<td id="15-59" class="unvisited"></td>
+		</tr>
+		<tr id="row 16">
+			<td id="16-0" class="unvisited"></td>
+			<td id="16-1" class="unvisited"></td>
+			<td id="16-2" class="unvisited"></td>
+			<td id="16-3" class="unvisited"></td>
+			<td id="16-4" class="unvisited"></td>
+			<td id="16-5" class="unvisited"></td>
+			<td id="16-6" class="unvisited"></td>
+			<td id="16-7" class="unvisited"></td>
+			<td id="16-8" class="unvisited"></td>
+			<td id="16-9" class="unvisited"></td>
+			<td id="16-10" class="unvisited"></td>
+			<td id="16-11" class="unvisited"></td>
+			<td id="16-12" class="unvisited"></td>
+			<td id="16-13" class="unvisited"></td>
+			<td id="16-14" class="unvisited"></td>
+			<td id="16-15" class="unvisited"></td>
+			<td id="16-16" class="unvisited"></td>
+			<td id="16-17" class="unvisited"></td>
+			<td id="16-18" class="unvisited"></td>
+			<td id="16-19" class="unvisited"></td>
+			<td id="16-20" class="unvisited"></td>
+			<td id="16-21" class="unvisited"></td>
+			<td id="16-22" class="unvisited"></td>
+			<td id="16-23" class="unvisited"></td>
+			<td id="16-24" class="unvisited"></td>
+			<td id="16-25" class="unvisited"></td>
+			<td id="16-26" class="unvisited"></td>
+			<td id="16-27" class="unvisited"></td>
+			<td id="16-28" class="unvisited"></td>
+			<td id="16-29" class="unvisited"></td>
+			<td id="16-30" class="unvisited"></td>
+			<td id="16-31" class="unvisited"></td>
+			<td id="16-32" class="unvisited"></td>
+			<td id="16-33" class="unvisited"></td>
+			<td id="16-34" class="unvisited"></td>
+			<td id="16-35" class="unvisited"></td>
+			<td id="16-36" class="unvisited"></td>
+			<td id="16-37" class="unvisited"></td>
+			<td id="16-38" class="unvisited"></td>
+			<td id="16-39" class="unvisited"></td>
+			<td id="16-40" class="unvisited"></td>
+			<td id="16-41" class="unvisited"></td>
+			<td id="16-42" class="unvisited"></td>
+			<td id="16-43" class="unvisited"></td>
+			<td id="16-44" class="unvisited"></td>
+			<td id="16-45" class="unvisited"></td>
+			<td id="16-46" class="unvisited"></td>
+			<td id="16-47" class="unvisited"></td>
+			<td id="16-48" class="unvisited"></td>
+			<td id="16-49" class="unvisited"></td>
+			<td id="16-50" class="unvisited"></td>
+			<td id="16-51" class="unvisited"></td>
+			<td id="16-52" class="unvisited"></td>
+			<td id="16-53" class="unvisited"></td>
+			<td id="16-54" class="unvisited"></td>
+			<td id="16-55" class="unvisited"></td>
+			<td id="16-56" class="unvisited"></td>
+			<td id="16-57" class="unvisited"></td>
+			<td id="16-58" class="unvisited"></td>
+			<td id="16-59" class="unvisited"></td>
+		</tr>
+		<tr id="row 17">
+			<td id="17-0" class="unvisited"></td>
+			<td id="17-1" class="unvisited"></td>
+			<td id="17-2" class="unvisited"></td>
+			<td id="17-3" class="unvisited"></td>
+			<td id="17-4" class="unvisited"></td>
+			<td id="17-5" class="unvisited"></td>
+			<td id="17-6" class="unvisited"></td>
+			<td id="17-7" class="unvisited"></td>
+			<td id="17-8" class="unvisited"></td>
+			<td id="17-9" class="unvisited"></td>
+			<td id="17-10" class="unvisited"></td>
+			<td id="17-11" class="unvisited"></td>
+			<td id="17-12" class="unvisited"></td>
+			<td id="17-13" class="unvisited"></td>
+			<td id="17-14" class="unvisited"></td>
+			<td id="17-15" class="unvisited"></td>
+			<td id="17-16" class="unvisited"></td>
+			<td id="17-17" class="unvisited"></td>
+			<td id="17-18" class="unvisited"></td>
+			<td id="17-19" class="unvisited"></td>
+			<td id="17-20" class="unvisited"></td>
+			<td id="17-21" class="unvisited"></td>
+			<td id="17-22" class="unvisited"></td>
+			<td id="17-23" class="unvisited"></td>
+			<td id="17-24" class="unvisited"></td>
+			<td id="17-25" class="unvisited"></td>
+			<td id="17-26" class="unvisited"></td>
+			<td id="17-27" class="unvisited"></td>
+			<td id="17-28" class="unvisited"></td>
+			<td id="17-29" class="unvisited"></td>
+			<td id="17-30" class="unvisited"></td>
+			<td id="17-31" class="unvisited"></td>
+			<td id="17-32" class="unvisited"></td>
+			<td id="17-33" class="unvisited"></td>
+			<td id="17-34" class="unvisited"></td>
+			<td id="17-35" class="unvisited"></td>
+			<td id="17-36" class="unvisited"></td>
+			<td id="17-37" class="unvisited"></td>
+			<td id="17-38" class="unvisited"></td>
+			<td id="17-39" class="unvisited"></td>
+			<td id="17-40" class="unvisited"></td>
+			<td id="17-41" class="unvisited"></td>
+			<td id="17-42" class="unvisited"></td>
+			<td id="17-43" class="unvisited"></td>
+			<td id="17-44" class="unvisited"></td>
+			<td id="17-45" class="unvisited"></td>
+			<td id="17-46" class="unvisited"></td>
+			<td id="17-47" class="unvisited"></td>
+			<td id="17-48" class="unvisited"></td>
+			<td id="17-49" class="unvisited"></td>
+			<td id="17-50" class="unvisited"></td>
+			<td id="17-51" class="unvisited"></td>
+			<td id="17-52" class="unvisited"></td>
+			<td id="17-53" class="unvisited"></td>
+			<td id="17-54" class="unvisited"></td>
+			<td id="17-55" class="unvisited"></td>
+			<td id="17-56" class="unvisited"></td>
+			<td id="17-57" class="unvisited"></td>
+			<td id="17-58" class="unvisited"></td>
+			<td id="17-59" class="unvisited"></td>
+		</tr>
+		<!-- ----------------- -->
+		
+		
+
+
+	</tbody>
+</table>
+
+</body>
+</html>

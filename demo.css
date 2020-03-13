@@ -1,0 +1,428 @@
+.unvisited{
+  width: 25px;
+  height: 25px;
+  border: 1px solid rgb(175, 216, 248);
+  background-color:white;
+}
+
+.start{
+  width: 25px;
+  height: 25px;
+  /*background-color: green;*/
+  background-image: url("right.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  border: 1px solid rgb(175, 216, 248);
+  /*background-color:white;*/
+}
+
+.target{
+  width: 25px;
+  height: 25px;
+  /*background-color: red;*/
+  background-image: url("target.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  border: 1px solid rgb(175, 216, 248);
+  background-color:white;
+}
+
+.head{
+	margin-top: 25px;
+}
+
+#board td{
+	width: 25px;
+	height: 25px;
+}
+
+td, th{
+	padding: 0;
+}
+
+td {
+    display: table-cell;
+    vertical-align: inherit;
+}
+
+#board {
+    border-collapse: collapse;
+}
+
+.flag {
+  width: 25px;
+  height: 25px;
+  background-image: url("redflag.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  border: 1px solid rgb(175, 216, 248);
+}
+
+table {
+    border-spacing: 0;
+    border-collapse: collapse;
+    border-collapse: separate;
+    white-space: normal;
+    line-height: normal;
+    font-weight: normal;
+    font-size: medium;
+    font-style: normal;
+    color: -internal-quirk-inherit;
+    text-align: start;
+    border-spacing: 2px;
+    font-variant: normal;
+}
+
+
+.node-shortest-path {
+  animation-name: shortestPath;
+  animation-duration: 1s;
+  animation-timing-function: ease-out;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+}
+
+@keyframes shortestPath {
+  0% {
+    transform: scale(0.6);
+    background-color: rgb(255, 254, 106);
+  }
+
+  50% {
+    transform: scale(1.2);
+    background-color: rgb(255, 254, 106);
+  }
+
+  100% {
+    transform: scale(0.93);
+    background-color: rgb(255, 254, 106);
+  }
+}
+
+.flag-node-shortest-path {
+  animation-name: flagshortestPath;
+  animation-duration: 1s;
+  animation-timing-function: ease-out;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+}
+
+@keyframes flagshortestPath {
+  0% {
+    transform: scale(0.6);
+    background-color: #fc8414;
+  }
+
+  50% {
+    transform: scale(1.2);
+    background-color:#fc8414;
+  }
+
+  100% {
+    transform: scale(0.93);
+    background-color: #fc8414;
+  }
+}
+
+.node-visited {
+  animation-name: visitedAnimation;
+  animation-duration: 1.3s;
+  animation-timing-function: ease-out;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+}
+
+.node-visited1 {
+  animation-name: visitedAnimation1;
+  animation-duration: 1.3s;
+  animation-timing-function: ease-out;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+}
+
+@keyframes visitedAnimation {
+  0% {
+    transform: scale(0.3);
+    background-color: rgba(0, 0, 66, 0.75);
+    border-radius: 100%;
+  }
+
+  50% {
+    /*transform: scale(0.8);*/
+    background-color: rgba(17, 104, 217, 0.75);
+  }
+
+  75% {
+    transform: scale(1.2);
+    background-color: rgba(0, 217, 159, 0.75);
+  }
+
+  100% {
+    transform: scale(0.93);
+    background-color: rgba(0, 190, 218, 0.75);
+  }
+}
+
+@keyframes visitedAnimation1 {
+  0% {
+    transform: scale(0.3);
+    background-color: rgba(0, 0, 66, 0.75);
+    border-radius: 100%;
+  }
+
+  50% {
+    /*transform: scale(0.8);*/
+    background-color: rgba(17, 104, 217, 0.75);
+  }
+
+  75% {
+    transform: scale(1.2);
+    background-color: rgba(0, 217, 159, 0.75);
+  }
+
+  100% {
+    transform: scale(0.93);
+    background-color: rgba(0, 190, 218, 0.75);
+  }
+}
+
+.flag-node-visited {
+  animation-name: flagvisitedAnimation;
+  animation-duration: 1.3s;
+  animation-timing-function: ease-out;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+}
+
+.flag-node-visited1 {
+  animation-name: flagvisitedAnimation;
+  animation-duration: 1.3s;
+  animation-timing-function: ease-out;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+}
+
+
+@keyframes flagvisitedAnimation {
+  0% {
+    transform: scale(0.3);
+    background-color: rgb(172, 107, 237);
+    border-radius: 100%;
+  }
+
+  50% {
+    /*transform: scale(0.8);*/
+    background-color: rgb(172, 107, 237);
+  }
+
+  75% {
+    transform: scale(1.2);
+    background-color: rgb(172, 107, 237);
+  }
+
+  100% {
+    transform: scale(0.93);
+    background-color: rgb(172, 107, 237);
+  }
+}
+
+#btn {
+	padding: 5px;
+	margin-left: 50%;
+}
+
+.wall{
+  background-color: rgb(12, 53, 71)
+}
+
+
+.startTransparent{
+opacity:0.5;
+background-color:rgb(255, 254, 106);
+background-position:center;
+background-repeat:
+no-repeat;
+background-size:
+contain;
+/*animation-name:specialNodes;*/
+animation-duration:2s;
+animation-timing-function:ease-out;
+animation-delay:0s;
+animation-direction:alternate;
+animation-iteration-count:1;
+animation-fill-mode:forwards;
+animation-play-state:running;
+background-image:url("right.svg");
+}
+
+.shortest-path-down{
+background:url(right.svg);
+background-color:rgb(255, 254, 106);
+background-position:center;
+background-repeat:no-repeat;
+background-size:contain;
+animation-name:triangletwo;
+animation-duration:1.5s;
+animation-timing-function:linear;
+animation-delay:0s;
+animation-direction:alternate;
+animation-iteration-count:1;
+animation-fill-mode:forwards;
+animation-play-state:running;
+background-image:url("triangletwo-down.svg");
+} 
+
+
+#snackbar {
+  visibility: hidden; /* Hidden by default. Visible on click */
+  min-width: 250px; /* Set a default minimum width */
+  margin-left: -125px; /* Divide value of min-width by 2 */
+  background-color: #e1e6e8; /* Black background color */
+  color: #292e30; /* White text color */
+  text-align: center; /* Centered text */
+  border-radius: 2px; /* Rounded borders */
+  padding: 16px; /* Padding */
+  position: fixed; /* Sit on top of the screen */
+  z-index: 1; /* Add a z-index if needed */
+  left: 50%; /* Center the snackbar */
+  bottom: 30px; /* 30px from the bottom */
+}
+
+#snackbar1 {
+  visibility: hidden; /* Hidden by default. Visible on click */
+  min-width: 250px; /* Set a default minimum width */
+  margin-left: -125px; /* Divide value of min-width by 2 */
+  background-color: #e1e6e8; /* Black background color */
+  color: #292e30; /* White text color */
+  text-align: center; /* Centered text */
+  border-radius: 2px; /* Rounded borders */
+  padding: 16px; /* Padding */
+  position: fixed; /* Sit on top of the screen */
+  z-index: 1; /* Add a z-index if needed */
+  left: 50%; /* Center the snackbar */
+  bottom: 30px; /* 30px from the bottom */
+}
+
+#snackbar2 {
+  visibility: hidden; /* Hidden by default. Visible on click */
+  min-width: 250px; /* Set a default minimum width */
+  margin-left: -125px; /* Divide value of min-width by 2 */
+  background-color: #e1e6e8; /* Black background color */
+  color: #292e30; /* White text color */
+  text-align: center; /* Centered text */
+  border-radius: 2px; /* Rounded borders */
+  padding: 16px; /* Padding */
+  position: fixed; /* Sit on top of the screen */
+  z-index: 1; /* Add a z-index if needed */
+  left: 50%; /* Center the snackbar */
+  bottom: 30px; /* 30px from the bottom */
+}
+
+
+/* Show the snackbar when clicking on a button (class added with JavaScript) */
+#snackbar.show {
+  visibility: visible; /* Show the snackbar */
+  /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+  However, delay the fade out process for 2.5 seconds */
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+/* Animations to fade the snackbar in and out */
+@-webkit-keyframes fadein {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
+}
+
+#snackbar1.show {
+  visibility: visible; /* Show the snackbar */
+  /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+  However, delay the fade out process for 2.5 seconds */
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+/* Animations to fade the snackbar in and out */
+@-webkit-keyframes fadein {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
+}
+
+#snackbar2.show {
+  visibility: visible; /* Show the snackbar */
+  /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+  However, delay the fade out process for 2.5 seconds */
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+/* Animations to fade the snackbar in and out */
+@-webkit-keyframes fadein {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
+}
+
+.nobr { white-space: nowrap }
