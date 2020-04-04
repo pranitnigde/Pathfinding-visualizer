@@ -425,4 +425,7 @@ background-image:url("triangletwo-down.svg");
   to {bottom: 0; opacity: 0;}
 }
 
-.nobr { white-space: nowrap }
+.nobr {
+ /*white-space: nowrap */
+ padding-top: 7px;
+}
